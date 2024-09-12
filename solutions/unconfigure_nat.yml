@@ -1,0 +1,38 @@
+---
+#
+# Testcase unique IDs (uids) to execute. Unique IDs may be specified on the
+# CLI using the "--uids <uid>" but adding it here saves keystrokes!
+# By default, no testcases will be run without specifying the uids.
+uids:
+  - UnconfigureInsideNat
+
+# Name of this test (uid)
+UnconfigureInsideNat:
+  source:
+    pkg: genie.libs.sdk
+    class: triggers.blitz.blitz.Blitz
+
+  test_sections:
+    - Unconfigure NAT:
+      - configure:
+          device: uut
+          command: |
+            no ip access-list standard NAT-ACL
+
+      - api:
+          function: clear_ip_nat_translation_all
+          device: uut
+
+      - api:
+          function: unconfigure_nat_overload_rule
+          device: uut
+          arguments:
+            interface: GigabitEthernet2
+            access_list_name: NAT-ACL
+
+      - api:
+          function: unconfigure_nat_in_out
+          device: uut
+          arguments:
+            inside_interface: Loopback0
+            outside_interface: GigabitEthernet2
