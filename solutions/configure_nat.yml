@@ -60,12 +60,6 @@ ConfigureInsideNat:
             source: Loopback0
           include:
             - value_operator('success_rate_percent', '>=', 80)
-          save:
-            - variable_name: structured_ping_data
-
-      - print:
-          item:
-            value: "%VARIABLES{structured_ping_data}"
 
       - parse:
           command: show ip nat translations

@@ -5,28 +5,16 @@ testbed:
     default:
       username: developer
       password: C1sco12345!CL
+
 devices:
   devnet-rtr:
+    alias: uut
     os: iosxe
     platform: cat8k
-    alias: uut
     connections:
-      defaults:
-        via: ssh
       ssh:
         protocol: ssh
         host: "%ENV{RTR_DNS_NAME}"
         ssh_options: -F %ENV{PWD}/../ssh/ssh_config
-
-topology:
-  devnet-rtr:
-    interfaces:
-      Loopback0:
-        type: ethernet
-        ipv4: 192.168.1.128/32
-      GigabitEthernet1:
-        type: ethernet
-        dhcp: true
-      GigabitEthernet2:
-        type: ethernet
-        dhcp: true
+      defaults:
+        via: ssh
