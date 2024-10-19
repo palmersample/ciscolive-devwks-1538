@@ -125,6 +125,28 @@ generate_ssh_config()
 
 }
 
+restart_caddy()
+{
+  printf "%40s" "Stopping log proxy: "
+  CADDY_STOP_RESULT=$(${TIMEOUT_CMD}pkill caddy)
+  if [ $? -le 1 ]; then
+    echo "OK"
+  else
+    ERROR_COUNT=${ERROR_COUNT+1}
+    ERROR_MESSAGES="${ERROR_MESSAGES}\t- Problem stopping Caddy server.\n"
+    echo "FAIL"
+  fi
+
+  printf "%40s" "Starting log proxy: "
+  CADDY_START_RESULT=$(${TIMEOUT_CMD}caddy start --config Caddyfile 2>/dev/null >/dev/null)
+  if [ $? -ne 0 ]; then
+    ERROR_COUNT=${ERROR_COUNT+1}
+    ERROR_MESSAGES="${ERROR_MESSAGES}\t- Problem starting Caddy server.\n"
+    echo "FAIL"
+  else
+    echo "OK"
+  fi
+}
 
 echo "GET READY FOR YOUR CISCO LIVE WORKSHOP EXPERIENCE! :)"
 echo ""
@@ -154,6 +176,10 @@ test_router
 echo ""
 echo "SETUP: Generate SSH configuration files for Pod ${POD_NUMBER}"
 generate_ssh_config
+
+echo ""
+echo "SETUP: Restarting proxy for pyATS log server"
+restart_caddy
 
 echo ""
 if [ ${ERROR_COUNT} -gt 0 ]; then
