@@ -14,25 +14,29 @@ UnconfigureInsideNat:
 
   test_sections:
     - Unconfigure NAT:
-      - configure:
-          device: uut
-          command: |
-            no ip access-list standard NAT-ACL
+        - configure:
+            device: uut
+            command: |
+              no ip access-list standard NAT-ACL
 
-      - api:
-          function: clear_ip_nat_translation_all
-          device: uut
+        - api:
+            function: clear_ip_nat_translation_all
+            device: uut
 
-      - api:
-          function: unconfigure_nat_overload_rule
-          device: uut
-          arguments:
-            interface: GigabitEthernet2
-            access_list_name: NAT-ACL
+        - api:
+            function: unconfigure_nat_overload_rule
+            device: uut
+            arguments:
+              interface: GigabitEthernet2
+              access_list_name: NAT-ACL
 
-      - api:
-          function: unconfigure_nat_in_out
-          device: uut
-          arguments:
-            inside_interface: Loopback0
-            outside_interface: GigabitEthernet2
+        - api:
+            function: unconfigure_nat_in_out
+            device: uut
+            arguments:
+              inside_interface: Loopback0
+              outside_interface: GigabitEthernet2
+
+        - api:
+            function: save_running_config_configuration
+            device: uut

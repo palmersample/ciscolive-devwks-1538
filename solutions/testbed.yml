@@ -1,10 +1,6 @@
 ---
 testbed:
   name: DevNet-Testbed
-  credentials:
-    default:
-      username: developer
-      password: C1sco12345!CL
 
 devices:
   devnet-rtr:
@@ -12,9 +8,13 @@ devices:
     os: iosxe
     platform: cat8k
     connections:
-      ssh:
+      cli:
         protocol: ssh
         host: "%ENV{RTR_DNS_NAME}"
         ssh_options: -F %ENV{PWD}/../ssh/ssh_config
-      defaults:
-        via: ssh
+        arguments:
+          learn_hostname: true
+    credentials:
+      default:
+        username: developer
+        password: C1sco12345!CL
