@@ -58,7 +58,7 @@ test_router()
     -o 'BatchMode=yes' \
     -o 'ConnectionAttempts=1' \
     -o "StrictHostKeyChecking=no" \
-    dummy@${RTR_DNS_NAME} -p 8000 2>&1 > /dev/null
+    dummy@${RTR_DNS_NAME} -p ${PROXY_SSH_PORT} 2>&1 > /dev/null
   )
   SSH_STATUS=$(grep -i "permission denied" <<<${SSH_PROXY_RESULT})
   if [ $? -ne 0 ]; then
@@ -165,7 +165,7 @@ read POD_NUMBER
 POD_NUMBER=$(echo ${POD_NUMBER} | sed 's/^0*//')
 
 PROXY_DNS_NAME="proxy.${DNS_DOMAIN}"
-PROXY_SSH_PORT=8000
+PROXY_SSH_PORT=8022
 PROXY_NETCONF_PORT=8300
 
 RTR_DNS_NAME="pod${POD_NUMBER}-rtr.${DNS_DOMAIN}"
